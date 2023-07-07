@@ -44,7 +44,7 @@ def next_cron(
         next_dt = _get_next_dt(dt, options)
         # print(dt, next_dt)
         if next_dt is None:
-            return dt.replace(tzinfo=datetime.now().astimezone().tzinfo)
+            return dt
         dt = next_dt
 
 
@@ -66,9 +66,9 @@ def _get_next_dt(dt_: datetime, options: Options) -> Optional[datetime]:  # noqa
             micro = max(dt_.microsecond - options.microsecond, 0)
             if field == 'month':
                 if dt_.month == 12:
-                    return datetime(dt_.year + 1, 1, 1)
+                    return datetime(dt_.year + 1, 1, 1, tzinfo=dt_.tzinfo)
                 else:
-                    return datetime(dt_.year, dt_.month + 1, 1)
+                    return datetime(dt_.year, dt_.month + 1, 1, tzinfo=dt_.tzinfo)
             elif field in ('day', 'weekday'):
                 return (
                     dt_
